@@ -25,14 +25,14 @@ export class App extends Component {
       this.setState({ isLoading: true });
 
       PixabayAPI.fetchPhotos(value, page)
-        .then(({ photos, total_results }) => {
-          if (!photos.length) {
+        .then(({ items, total_results }) => {
+          if (!items.length) {
             this.setState({ isEmpty: true });
             return;
           }
 
           this.setState(prevState => ({
-            items: [...prevState.items, ...photos],
+            items: [...prevState.items, ...items],
             showBtn: page < Math.ceil(total_results / 12),
           }));
         })
