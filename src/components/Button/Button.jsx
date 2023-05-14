@@ -1,19 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import css from './Button.module.css';
 
-export const Button = ({ children, onClick, ...allyProps }) => (
-  <button type="button" onClick={onClick} {...allyProps}>
-    {children}
+export const Button = ({ onClick }) => (
+  <button type="button" onClick={onClick} className={css.Button}>
+    Load more
   </button>
 );
 
-Button.defaultProps = {
-  onClick: () => null,
-  children: null,
-};
-
 Button.propTypes = {
-  onClick: PropTypes.func,
-  children: PropTypes.node,
-  'aria-label': PropTypes.string,
+  onClick: PropTypes.func.isRequired,
 };

@@ -1,25 +1,84 @@
 import React, { Component } from 'react';
+import * as PixabayAPI from '../components/services/pixabarApi';
+// import { PixabayAPI } from '../components/services/pixabarApi';
+import { Searchbar } from './Searchbar/Searchbar';
+import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Button } from './Button/Button';
+import { Loader } from './Loader/Loader';
+import css from './App.module.css';
 
 export class App extends Component {
   state = {
+    value: '',
+    page: 1,
     items: [],
-    showModal: false,
+    showBtn: false,
+    isEmpty: false,
+    isLoading: false,
+    error: null,
   };
-}
 
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101',
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+  componentDidUpdate(_, prevState) {
+    const { value, page } = this.state;
+
+    if (prevState.value !== value || prevState.page !== page) {
+      this.setState({ isLoading: true });
+
+      PixabayAPI.fetchPhotos(value, page)
+        .then(({ photos, total_results }) => {
+          if (!photos.length) {
+            this.setState({ isEmpty: true });
+            return;
+          }
+
+          this.setState(prevState => ({
+            items: [...prevState.items, ...photos],
+            showBtn: page < Math.ceil(total_results / 12),
+          }));
+        })
+        .catch(error => {
+          this.setState({ error: error.message });
+        })
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
+    }
+  }
+
+  handleSubmit = value => {
+    this.setState({
+      value,
+      page: 1,
+      items: [],
+      showBtn: false,
+      isEmpty: false,
+      isLoading: false,
+      error: null,
+    });
+  };
+
+  handleButton = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
+  render() {
+    return (
+      <div className={css.App}>
+        <Searchbar handleSubmit={this.handleSubmit} />
+        <ImageGallery items={this.items} />
+
+        {this.state.showBtn && (
+          <Button type="button" onClick={this.handleButton}>
+            Load more
+          </Button>
+        )}
+
+        {this.state.isLoading && <Loader />}
+
+        {this.state.error && (
+          <p styles={{ textAlign: 'center' }}>Sorry. {this.state.error}</p>
+        )}
+      </div>
+    );
+  }
+}
