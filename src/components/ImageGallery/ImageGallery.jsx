@@ -4,7 +4,6 @@ import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
 export const ImageGallery = ({ items }) => {
-  console.log(items);
   return (
     <ul className={css.ImageGallery}>
       {items.map(item => {

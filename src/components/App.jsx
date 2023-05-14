@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as PixabayAPI from '../components/services/pixabarApi';
-// import { PixabayAPI } from '../components/services/pixabarApi';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
@@ -26,6 +25,7 @@ export class App extends Component {
 
       PixabayAPI.fetchPhotos(value, page)
         .then(({ items, total_results }) => {
+          console.log(value);
           if (!items.length) {
             this.setState({ isEmpty: true });
             return;
@@ -65,7 +65,7 @@ export class App extends Component {
     return (
       <div className={css.App}>
         <Searchbar handleSubmit={this.handleSubmit} />
-        <ImageGallery items={this.items} />
+        <ImageGallery items={this.state.items} />
 
         {this.state.showBtn && (
           <Button type="button" onClick={this.handleButton}>
