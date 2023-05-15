@@ -4,14 +4,6 @@ import { Modal } from '../Modal/Modal';
 import css from './ImageGalleryItem.module.css';
 
 export class ImageGalleryItem extends Component {
-  // static propTypes = {
-  //   item: PropTypes.shape({
-  //     webformatURL: PropTypes.string.isRequired,
-  //     tags: PropTypes.string.isRequired,
-  //     largeImageURL: PropTypes.string.isRequired,
-  //   }).isRequired,
-  // };
-
   state = { showModal: false };
 
   handleModalOpen = () => {
@@ -49,3 +41,10 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
+ImageGalleryItem.propTypes = {
+  item: PropTypes.shape({
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  }).isRequired,
+};
