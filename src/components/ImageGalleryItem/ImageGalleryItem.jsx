@@ -34,7 +34,7 @@ export class ImageGalleryItem extends Component {
           <Modal
             largeImageURL={largeImageURL}
             tags={tags}
-            onClose={this.handleModalClose}
+            handleModalClose={this.handleModalClose}
           />
         )}
       </>
