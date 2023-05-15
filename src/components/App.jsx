@@ -12,7 +12,7 @@ export class App extends Component {
     page: 1,
     items: [],
     showBtn: false,
-    isEmpty: false,
+    isEmpty: true,
     isLoading: false,
     error: null,
   };
@@ -24,16 +24,15 @@ export class App extends Component {
       this.setState({ isLoading: true });
 
       PixabayAPI.fetchPhotos(value, page)
-        .then(({ items, total_results }) => {
-          console.log(value);
-          if (!items.length) {
+        .then(({ hits, total }) => {
+          if (!hits.length) {
             this.setState({ isEmpty: true });
             return;
           }
 
           this.setState(prevState => ({
-            items: [...prevState.items, ...items],
-            showBtn: page < Math.ceil(total_results / 12),
+            items: [...prevState.items, ...hits],
+            showBtn: page < Math.ceil(total / 12),
           }));
         })
         .catch(error => {
@@ -62,22 +61,24 @@ export class App extends Component {
   };
 
   render() {
+    const { items, isEmpty, showBtn, error, isLoading } = this.state;
     return (
       <div className={css.App}>
         <Searchbar handleSubmit={this.handleSubmit} />
-        <ImageGallery items={this.state.items} />
 
-        {this.state.showBtn && (
-          <Button type="button" onClick={this.handleButton}>
-            Load more
-          </Button>
+        {isEmpty && (
+          <p className={css.Text}>
+            Sorry. There are no images on your search ...{' '}
+          </p>
         )}
 
-        {this.state.isLoading && <Loader />}
+        <ImageGallery items={items} />
 
-        {this.state.error && (
-          <p styles={{ textAlign: 'center' }}>Sorry. {this.state.error}</p>
-        )}
+        {showBtn && <Button onClick={this.handleButton} />}
+
+        {isLoading && <Loader />}
+
+        {error && <p className={css.Text}>Sorry. {error}</p>}
       </div>
     );
   }

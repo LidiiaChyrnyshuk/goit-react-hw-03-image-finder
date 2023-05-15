@@ -4,33 +4,36 @@ import { Modal } from '../Modal/Modal';
 import css from './ImageGalleryItem.module.css';
 
 export class ImageGalleryItem extends Component {
-  static propTypes = {
-    itemData: PropTypes.shape({
-      webformatURL: PropTypes.string.isRequired,
-      tags: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-    }).isRequired,
-  };
+  // static propTypes = {
+  //   item: PropTypes.shape({
+  //     webformatURL: PropTypes.string.isRequired,
+  //     tags: PropTypes.string.isRequired,
+  //     largeImageURL: PropTypes.string.isRequired,
+  //   }).isRequired,
+  // };
 
   state = { showModal: false };
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  handleModalOpen = () => {
+    this.setState({ isModalOpen: true });
+  };
+
+  handleModalClose = () => {
+    this.setState({ isModalOpen: false });
   };
 
   render() {
-    const { webformatURL, tags, largeImageURL } = this.props.itemData;
+    const { webformatURL, tags, largeImageURL } = this.props.item;
+
     const { isModalOpen } = this.state;
 
     return (
       <>
-        <li class="gallery-item" className={css.ImageGalleryItem}>
+        <li className={css.ImageGalleryItem}>
           <img
             src={webformatURL}
             alt={tags}
-            onClick={this.t}
+            onClick={this.handleModalOpen}
             className={css.ImageGalleryItemImage}
           />
         </li>
@@ -39,7 +42,7 @@ export class ImageGalleryItem extends Component {
           <Modal
             largeImageURL={largeImageURL}
             tags={tags}
-            onClose={this.toggleModal}
+            onClose={this.handleModalClose}
           />
         )}
       </>

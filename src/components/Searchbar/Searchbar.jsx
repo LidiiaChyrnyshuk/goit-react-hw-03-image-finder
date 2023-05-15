@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import css from './Searchbar.module.css';
 
 export class Searchbar extends Component {
@@ -15,12 +15,12 @@ export class Searchbar extends Component {
     event.preventDefault();
 
     if (!this.state.value) {
-      this.setState({ value: '' });
+      // this.setState({ value: '' });
       alert('Enter a search query!');
       return;
     }
 
-    // this.props.onSubmit(this.state.value);
+    this.props.handleSubmit(this.state.value);
     this.setState({ value: '' });
   };
   render() {
@@ -49,3 +49,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+};
