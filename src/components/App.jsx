@@ -12,7 +12,7 @@ export class App extends Component {
     page: 1,
     items: [],
     showBtn: false,
-    isEmpty: true,
+    isEmpty: false,
     isLoading: false,
     error: null,
   };

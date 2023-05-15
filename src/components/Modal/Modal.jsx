@@ -21,7 +21,7 @@ export class Modal extends Component {
   };
 
   handleBackdropClick = event => {
-    if (event.currenTarget === event.target) {
+    if (event.currentTarget === event.target) {
       this.props.handleModalClose();
     }
   };
@@ -31,7 +31,7 @@ export class Modal extends Component {
 
     return createPortal(
       <div className={css.Overlay} onClick={this.handleBackdropClick}>
-        <div classname={css.Modal}>
+        <div className={css.Modal}>
           <img src={largeImageURL} alt={tags} />
         </div>
       </div>,
@@ -43,5 +43,5 @@ export class Modal extends Component {
 Modal.propTypes = {
   largeImageURL: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
+  handleModalClose: PropTypes.func.isRequired,
 };
